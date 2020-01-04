@@ -10,6 +10,9 @@ python-dateutil = "==2.6.0"
 Babel = "*"
 Flask-Moment = "*"
 Flask-WTF = "*"
+flask-sqlqlchemy = "*"
+flask-migrate = "*"
+flaskmigrate = "*"
 
 [requires]
 python_version = "3.7"
