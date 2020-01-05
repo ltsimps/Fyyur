@@ -22,8 +22,7 @@ moment = Moment(app)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
-# TODO: connect to a local postgresql database
-migrate = Migrate(app, db)
+# TODO: connect to a local postgresql database  (Done!)
 
 
 #----------------------------------------------------------------------------#
@@ -44,7 +43,13 @@ class Venue(db.Model):
     #new
     seeking_talent = db.Column(db.Boolean)
     seeking_description = db.Column(db.String)
-    image_link = db.Column(db.String)
+    #genres = db.Column(db.String(),  nullable=False) turn back after Db Upgrate
+    genres = db.Column(db.String(),  nullable=True)
+    website = db.Column(db.String(), nullable=True)
+    shows = db.relationship('Show', backref='venue', lazy=True)
+
+
+
 
 
 
@@ -65,11 +70,17 @@ class Artist(db.Model):
     #new
     seeking_venue = db.Column(db.Boolean)
     seeking_description = db.Column(db.String)
-    image_link = db.Column(db.String)
 
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
-# TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
+
+class Show(db.Model): #join table since it's a many to many relationship
+  __tablename__ = 'Show'
+  id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+  artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=True)
+  venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'), nullable=True)
+  #start_time = db.Column(db.DateTime, nullable=False)
+  start_time = db.Column(db.DateTime, nullable=True)
+
 
 #----------------------------------------------------------------------------#
 # Filters.
